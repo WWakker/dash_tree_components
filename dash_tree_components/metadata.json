@@ -1,6 +1,6 @@
 {
   "src/lib/components/Tree.react.js": {
-    "description": "ExampleComponent is an example component.\nIt takes a property, `label`, and\ndisplays it.\nIt renders an input with the property `value`\nwhich is editable by the user.",
+    "description": "",
     "displayName": "Tree",
     "methods": [],
     "props": {
@@ -18,6 +18,31 @@
         "required": true,
         "description": "A list of dictionaries that defines the tree structure."
       },
+      "width": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "A list of dictionaries that defines the tree structure."
+      },
+      "height": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "A list of dictionaries that defines the tree structure."
+      },
+      "collapse_color": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "A list of dictionaries that defines the tree structure.",
+        "defaultValue": {
+          "value": "'#bdbcbc'",
+          "computed": false
+        }
+      },
       "open_by_default": {
         "type": {
           "name": "bool"
@@ -29,16 +54,12 @@
           "computed": false
         }
       },
-      "leaf_icon_color": {
+      "className": {
         "type": {
           "name": "string"
         },
         "required": false,
-        "description": "A list of dictionaries that defines the tree structure.",
-        "defaultValue": {
-          "value": "'#D3D3D3'",
-          "computed": false
-        }
+        "description": "Class name of the tree."
       },
       "setProps": {
         "type": {
