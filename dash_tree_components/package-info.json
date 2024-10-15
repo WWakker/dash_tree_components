@@ -1,6 +1,6 @@
 {
   "name": "dash_tree_components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tree components for Dash",
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 {
   "src/lib/components/Tree.react.js": {
-    "description": "",
+    "description": "Tree is an dash component which can be used as table of contents.\nIt takes an array of dictionaries, `data`, and\ndisplays it as a hierarchical tree structure.",
     "displayName": "Tree",
     "methods": [],
     "props": {
@@ -23,23 +23,58 @@
           "name": "number"
         },
         "required": false,
-        "description": "A list of dictionaries that defines the tree structure."
+        "description": "The width of the Tree."
       },
       "height": {
         "type": {
           "name": "number"
         },
         "required": false,
-        "description": "A list of dictionaries that defines the tree structure."
+        "description": "The height of the Tree."
+      },
+      "row_height": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "The height of the rows."
+      },
+      "indent": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Indent of the Tree."
+      },
+      "padding_top": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Top padding."
+      },
+      "padding_bottom": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Bottom padding."
+      },
+      "padding": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Padding."
       },
       "collapse_color": {
         "type": {
           "name": "string"
         },
         "required": false,
-        "description": "A list of dictionaries that defines the tree structure.",
+        "description": "Color of collapse icons.",
         "defaultValue": {
-          "value": "'#bdbcbc'",
+          "value": "'#888888'",
           "computed": false
         }
       },
@@ -48,7 +83,7 @@
           "name": "bool"
         },
         "required": false,
-        "description": "A list of dictionaries that defines the tree structure.",
+        "description": "Open Tree by default.",
         "defaultValue": {
           "value": "true",
           "computed": false
@@ -60,6 +95,13 @@
         },
         "required": false,
         "description": "Class name of the tree."
+      },
+      "rowClassName": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Class name of the rows."
       },
       "setProps": {
         "type": {

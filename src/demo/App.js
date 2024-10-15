@@ -14,6 +14,7 @@ const App = () => {
         <div>
             <Tree
                 data={data}
+                rowClassName='rowclass'
                 setProps={setProps}
                 {...state}
             />

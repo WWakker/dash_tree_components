@@ -3,10 +3,7 @@ import { AiFillFolder, AiFillFile, AiOutlinePlusSquare, AiOutlineMinusSquare} fr
 import { MdArrowRight, MdArrowDropDown, MdEdit, MdBarChart } from "react-icons/md";
 import { FaFolderOpen } from "react-icons/fa";
 
-const collapseColor = '#bdbcbc';
-
 const Node = ({ node, style, tree }) => {
-  console.log(tree)
   return (
     <div className="tree-node-container" style={style} >
       <div
@@ -19,21 +16,19 @@ const Node = ({ node, style, tree }) => {
             <span className="tree-file-folder-icon">
               <MdBarChart color={node.data.iconColor} />
             </span>
-            <span className="tree-node-text">
-                <span><a href={node.data.href}>{node.data.name}</a></span>
-            </span>
+            <a className="tree-node-leaf-text" href={node.data.href}>{node.data.name}</a>
           </>
         ) : (
           <>
             <span className="tree-collapse">
-              {node.isOpen ? <AiOutlineMinusSquare color={collapseColor} /> : <AiOutlinePlusSquare color={collapseColor} />}
+              {node.isOpen ? <AiOutlineMinusSquare color={tree.props.collapse_color} /> : <AiOutlinePlusSquare color={tree.props.collapse_color} />}
             </span>
             <span className="tree-file-folder-icon">
               <FaFolderOpen color={node.data.iconColor} />
             </span>
-            <span className="tree-node-text">
-          <span>{node.data.name}</span>
-        </span>
+            <p className="tree-node-folder-text">
+                {node.data.name}
+        </p>
           </>
         )}
       </div>

@@ -1,0 +1,23 @@
+[role="treeitem"] {
+  transition: top 0.2s ease-in;
+}
+
+.tree-node-content {
+    align-items: center;
+    display: flex;
+}
+
+.tree-node-text, .tree-collapse, .tree-node-container, .tree-node-content {
+    height: inherit;
+    align-items: center;
+    display: flex;
+}
+
+.tree-file-folder-icon {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+a.tree-node-leaf-text {
+    text-decoration: none;
+}
