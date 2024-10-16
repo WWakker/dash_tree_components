@@ -3,7 +3,7 @@ module DashTreeComponents
 using Dash
 
 const resources_path = realpath(joinpath( @__DIR__, "..", "deps"))
-const version = "0.0.2"
+const version = "0.0.3"
 
 include("jl/tree.jl")
 

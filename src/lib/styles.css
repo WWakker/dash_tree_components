@@ -2,12 +2,7 @@
   transition: top 0.2s ease-in;
 }
 
-.tree-node-content {
-    align-items: center;
-    display: flex;
-}
-
-.tree-node-text, .tree-collapse, .tree-node-container, .tree-node-content {
+.tree-node-text, .tree-collapse, .tree-node-container, .tree-node-content, .tree-file-folder-icon, .tree-collapse {
     height: inherit;
     align-items: center;
     display: flex;
@@ -20,4 +15,8 @@
 
 a.tree-node-leaf-text {
     text-decoration: none;
+}
+
+.tree-search-input {
+    border-radius: 10px;
 }

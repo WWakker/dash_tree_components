@@ -55,7 +55,8 @@ export default class Tree extends Component {
                 disableDrop
                 disableEdit
                 disableMultiSelection
-                collapse_color={this.props.collapse_color}
+                collapse_icon_color={this.props.collapse_icon_color}
+                node_icon_color={this.props.node_icon_color}
             >
             {Node}
             </TreeArborist>

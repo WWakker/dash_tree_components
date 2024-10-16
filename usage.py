@@ -38,7 +38,7 @@ app.layout = html.Div([
         id='tree',
         data=data,
         open_by_default=True,
-        row_height=30,
+        row_height=24,
         searchable=True,
     ),
     html.Div(id='output')

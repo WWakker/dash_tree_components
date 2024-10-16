@@ -22,7 +22,7 @@ const Node = ({ node, style, tree }) => {
         ) : (
           <>
             <span className="tree-collapse">
-              {node.isOpen ? <AiOutlineMinusSquare color={tree.props.collapse_color} /> : <AiOutlinePlusSquare color={tree.props.collapse_color} />}
+              {node.isOpen ? <AiOutlineMinusSquare color={tree.props.collapse_icon_color} /> : <AiOutlinePlusSquare color={tree.props.collapse_icon_color} />}
             </span>
             <span className="tree-file-folder-icon">
               <FaFolderOpen color={node_icon_color} />
