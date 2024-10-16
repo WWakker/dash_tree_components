@@ -5,7 +5,7 @@ from dash.development.base_component import Component, _explicitize_args
 
 class Tree(Component):
     """A Tree component.
-Tree is an dash component which can be used as table of contents.
+Tree is a dash component which can be used as table of contents.
 It takes an array of dictionaries, `data`, and
 displays it as a hierarchical tree structure.
 

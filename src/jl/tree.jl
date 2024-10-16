@@ -6,7 +6,7 @@ export tree
     tree(;kwargs...)
 
 A Tree component.
-Tree is an dash component which can be used as table of contents.
+Tree is a dash component which can be used as table of contents.
 It takes an array of dictionaries, `data`, and
 displays it as a hierarchical tree structure.
 Keyword arguments:

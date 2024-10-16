@@ -1,6 +1,6 @@
 {
   "src/lib/components/Tree.react.js": {
-    "description": "Tree is an dash component which can be used as table of contents.\nIt takes an array of dictionaries, `data`, and\ndisplays it as a hierarchical tree structure.",
+    "description": "Tree is a dash component which can be used as table of contents.\nIt takes an array of dictionaries, `data`, and\ndisplays it as a hierarchical tree structure.",
     "displayName": "Tree",
     "methods": [],
     "props": {

@@ -13,20 +13,17 @@ const Node = ({ node, style, tree }) => {
       >
         {node.isLeaf ? (
           <>
-            <span className="tree-collapse"></span>
-            <span className="tree-file-folder-icon">
-              <MdBarChart color={node_icon_color} />
-            </span>
+              <MdBarChart className="tree-leaf-icon" color={node_icon_color} />
             <a className="tree-node-leaf-text" href={node.data.href}>{node.data.name}</a>
           </>
         ) : (
           <>
-            <span className="tree-collapse">
-              {node.isOpen ? <AiOutlineMinusSquare color={tree.props.collapse_icon_color} /> : <AiOutlinePlusSquare color={tree.props.collapse_icon_color} />}
-            </span>
-            <span className="tree-file-folder-icon">
-              <FaFolderOpen color={node_icon_color} />
-            </span>
+              {node.isOpen ? (
+              <AiOutlineMinusSquare className="tree-collapse-icon" color={tree.props.collapse_icon_color} />
+              ) : (
+              <AiOutlinePlusSquare className="tree-collapse-icon" color={tree.props.collapse_icon_color} />
+              )}
+              <FaFolderOpen className="tree-folder-icon" color={node_icon_color} />
             <p className="tree-node-folder-text">
                 {node.data.name}
         </p>
