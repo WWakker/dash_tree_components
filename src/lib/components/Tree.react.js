@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import PropTypes from 'prop-types';
 import { Tree as TreeArborist } from "react-arborist";
 import { SiHtml5, SiJavascript, SiCss3, SiMarkdown } from "react-icons/si";
@@ -15,19 +15,36 @@ import '../styles.css'
  */
 export default class Tree extends Component {
     constructor(props) {
-        super(props)
-
+        super(props);
+        this.state = {
+            term: ""
+        };
     }
 
     render() {
 
         return (
             <div id={this.props.id}>
+            {this.props.searchable ? (
+            <input
+              type="text"
+              placeholder="Search..."
+              className="tree-search-input"
+              value={this.state.term}
+              onChange={(e) => this.setState({term: e.target.value})}
+            />
+            ) : (
+            <></>
+            )
+            }
             <TreeArborist
                 data={this.props.data}
+                searchTerm={this.state.term}
                 width={this.props.width}
                 height={this.props.height}
                 indent={this.props.indent}
+                rowHeight={this.props.row_height}
+                overscanCount={this.props.overscan_count}
                 paddingTop={this.props.padding_top}
                 paddingBottom={this.props.padding_bottom}
                 padding={this.props.padding}
@@ -49,7 +66,9 @@ export default class Tree extends Component {
 
 Tree.defaultProps = {
     open_by_default: true,
-    collapse_color: '#888888'
+    collapse_icon_color: '#888888',
+    node_icon_color: '#424242',
+    searchable: true
 };
 
 Tree.propTypes = {
@@ -79,6 +98,11 @@ Tree.propTypes = {
     row_height: PropTypes.number,
 
     /**
+     * Overscan count.
+     */
+    overscan_count: PropTypes.number,
+
+    /**
      * Indent of the Tree.
      */
     indent: PropTypes.number,
@@ -101,12 +125,22 @@ Tree.propTypes = {
     /**
      * Color of collapse icons.
      */
-    collapse_color: PropTypes.string,
+    collapse_icon_color: PropTypes.string,
+
+    /**
+     * Color of collapse icons.
+     */
+    node_icon_color: PropTypes.string,
 
     /**
      * Open Tree by default.
      */
     open_by_default: PropTypes.bool,
+
+    /**
+     * Whether to include a search bar.
+     */
+    searchable: PropTypes.bool,
 
     /**
      * Class name of the tree.

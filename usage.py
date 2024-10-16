@@ -37,7 +37,9 @@ app.layout = html.Div([
     dash_tree_components.Tree(
         id='tree',
         data=data,
-        open_by_default=True
+        open_by_default=True,
+        row_height=30,
+        searchable=True,
     ),
     html.Div(id='output')
 ])

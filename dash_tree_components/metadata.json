@@ -39,6 +39,13 @@
         "required": false,
         "description": "The height of the rows."
       },
+      "overscan_count": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Overscan count."
+      },
       "indent": {
         "type": {
           "name": "number"
@@ -67,7 +74,7 @@
         "required": false,
         "description": "Padding."
       },
-      "collapse_color": {
+      "collapse_icon_color": {
         "type": {
           "name": "string"
         },
@@ -78,12 +85,34 @@
           "computed": false
         }
       },
+      "node_icon_color": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Color of collapse icons.",
+        "defaultValue": {
+          "value": "'#424242'",
+          "computed": false
+        }
+      },
       "open_by_default": {
         "type": {
           "name": "bool"
         },
         "required": false,
         "description": "Open Tree by default.",
+        "defaultValue": {
+          "value": "true",
+          "computed": false
+        }
+      },
+      "searchable": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Whether to include a search bar.",
         "defaultValue": {
           "value": "true",
           "computed": false

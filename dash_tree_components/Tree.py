@@ -17,7 +17,7 @@ Keyword arguments:
 - className (string; optional):
     Class name of the tree.
 
-- collapse_color (string; default '#888888'):
+- collapse_icon_color (string; default '#888888'):
     Color of collapse icons.
 
 - data (list; required):
@@ -29,8 +29,14 @@ Keyword arguments:
 - indent (number; optional):
     Indent of the Tree.
 
+- node_icon_color (string; default '#424242'):
+    Color of collapse icons.
+
 - open_by_default (boolean; default True):
     Open Tree by default.
+
+- overscan_count (number; optional):
+    Overscan count.
 
 - padding (number; optional):
     Padding.
@@ -47,6 +53,9 @@ Keyword arguments:
 - row_height (number; optional):
     The height of the rows.
 
+- searchable (boolean; default True):
+    Whether to include a search bar.
+
 - width (number; optional):
     The width of the Tree."""
     _children_props = []
@@ -54,10 +63,10 @@ Keyword arguments:
     _namespace = 'dash_tree_components'
     _type = 'Tree'
     @_explicitize_args
-    def __init__(self, id=Component.UNDEFINED, data=Component.REQUIRED, width=Component.UNDEFINED, height=Component.UNDEFINED, row_height=Component.UNDEFINED, indent=Component.UNDEFINED, padding_top=Component.UNDEFINED, padding_bottom=Component.UNDEFINED, padding=Component.UNDEFINED, collapse_color=Component.UNDEFINED, open_by_default=Component.UNDEFINED, className=Component.UNDEFINED, rowClassName=Component.UNDEFINED, **kwargs):
-        self._prop_names = ['id', 'className', 'collapse_color', 'data', 'height', 'indent', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'width']
+    def __init__(self, id=Component.UNDEFINED, data=Component.REQUIRED, width=Component.UNDEFINED, height=Component.UNDEFINED, row_height=Component.UNDEFINED, overscan_count=Component.UNDEFINED, indent=Component.UNDEFINED, padding_top=Component.UNDEFINED, padding_bottom=Component.UNDEFINED, padding=Component.UNDEFINED, collapse_icon_color=Component.UNDEFINED, node_icon_color=Component.UNDEFINED, open_by_default=Component.UNDEFINED, searchable=Component.UNDEFINED, className=Component.UNDEFINED, rowClassName=Component.UNDEFINED, **kwargs):
+        self._prop_names = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'overscan_count', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'searchable', 'width']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'className', 'collapse_color', 'data', 'height', 'indent', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'width']
+        self.available_properties = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'overscan_count', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'searchable', 'width']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()
