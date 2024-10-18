@@ -15,6 +15,8 @@ const App = () => {
             <Tree
                 data={data}
                 rowClassName='rowclass'
+                width={400}
+                height={500}
                 setProps={setProps}
                 {...state}
             />

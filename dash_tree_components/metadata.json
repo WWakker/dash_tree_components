@@ -23,14 +23,22 @@
           "name": "number"
         },
         "required": false,
-        "description": "The width of the Tree."
+        "description": "The width of the Tree.",
+        "defaultValue": {
+          "value": "null",
+          "computed": false
+        }
       },
       "height": {
         "type": {
           "name": "number"
         },
         "required": false,
-        "description": "The height of the Tree."
+        "description": "The height of the Tree.",
+        "defaultValue": {
+          "value": "null",
+          "computed": false
+        }
       },
       "row_height": {
         "type": {

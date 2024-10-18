@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
 import PropTypes from 'prop-types';
 import { Tree as TreeArborist } from "react-arborist";
+import useResizeObserver from "use-resize-observer";
 import { SiHtml5, SiJavascript, SiCss3, SiMarkdown } from "react-icons/si";
 import { FaNpm } from "react-icons/fa";
 import { AiFillFolder, AiFillFile } from "react-icons/ai";
@@ -13,63 +14,64 @@ import '../styles.css'
  * It takes an array of dictionaries, `data`, and
  * displays it as a hierarchical tree structure.
  */
-export default class Tree extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            term: ""
-        };
-    }
+const Tree = (props) => {
+    const [term, setTerm] = useState("");
 
-    render() {
+    // Using the resize observer to detect changes to container size
+    const { ref, width: observedWidth, height: observedHeight } = useResizeObserver();
 
-        return (
-            <div id={this.props.id}>
-            {this.props.searchable ? (
-            <input
-              type="text"
-              placeholder="Search..."
-              className="tree-search-input"
-              value={this.state.term}
-              onChange={(e) => this.setState({term: e.target.value})}
-            />
-            ) : (
-            <></>
-            )
-            }
+    return (
+        <div id={props.id}
+             className='tree-container'
+             ref={ref}
+             style={{
+                width: props.width || '100%',
+                height: props.height || '100%',
+            }}
+             >
+            {props.searchable ? (
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    className="tree-search-input"
+                    value={term}
+                    onChange={(e) => setTerm(e.target.value)}
+                />
+            ) : null}
             <TreeArborist
-                data={this.props.data}
-                searchTerm={this.state.term}
-                width={this.props.width}
-                height={this.props.height}
-                indent={this.props.indent}
-                rowHeight={this.props.row_height}
-                overscanCount={this.props.overscan_count}
-                paddingTop={this.props.padding_top}
-                paddingBottom={this.props.padding_bottom}
-                padding={this.props.padding}
-                openByDefault={this.props.open_by_default}
-                className={this.props.className}
-                rowClassName={this.props.rowClassName}
+                data={props.data}
+                searchTerm={term}
+                width={observedWidth}
+                height={observedHeight}
+                indent={props.indent}
+                rowHeight={props.row_height}
+                overscanCount={props.overscan_count}
+                paddingTop={props.padding_top}
+                paddingBottom={props.padding_bottom}
+                padding={props.padding}
+                openByDefault={props.open_by_default}
+                className={props.className}
+                rowClassName={props.rowClassName}
                 disableDrag
                 disableDrop
                 disableEdit
                 disableMultiSelection
-                collapse_icon_color={this.props.collapse_icon_color}
-                node_icon_color={this.props.node_icon_color}
+                collapse_icon_color={props.collapse_icon_color}
+                node_icon_color={props.node_icon_color}
             >
-            {Node}
+                {Node}
             </TreeArborist>
-            </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 Tree.defaultProps = {
     open_by_default: true,
     collapse_icon_color: '#888888',
     node_icon_color: '#424242',
-    searchable: true
+    searchable: true,
+    width: null,
+    height: null
 };
 
 Tree.propTypes = {
@@ -159,3 +161,5 @@ Tree.propTypes = {
      */
     setProps: PropTypes.func
 };
+
+export default Tree

@@ -1,6 +1,6 @@
 {
   "name": "dash_tree_components",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Tree components for Dash",
   "repository": {
     "type": "git",
@@ -26,7 +26,8 @@
   "dependencies": {
     "ramda": "^0.26.1",
     "react-arborist": "^3.4.0",
-    "react-icons": "^5.3.0"
+    "react-icons": "^5.3.0",
+    "use-resize-observer": "^9.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",
