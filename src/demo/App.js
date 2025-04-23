@@ -18,6 +18,7 @@ const App = () => {
                 width={400}
                 height={500}
                 setProps={setProps}
+                searchable={true}
                 {...state}
             />
         </div>

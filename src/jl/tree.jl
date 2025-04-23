@@ -24,11 +24,12 @@ Keyword arguments:
 - `padding_top` (Real; optional): Top padding.
 - `rowClassName` (String; optional): Class name of the rows.
 - `row_height` (Real; optional): The height of the rows.
+- `search_input_height` (Real; optional): Height of the search bar in pixels.
 - `searchable` (Bool; optional): Whether to include a search bar.
 - `width` (Real; optional): The width of the Tree.
 """
 function tree(; kwargs...)
-        available_props = Symbol[:id, :className, :collapse_icon_color, :data, :height, :indent, :node_icon_color, :open_by_default, :overscan_count, :padding, :padding_bottom, :padding_top, :rowClassName, :row_height, :searchable, :width]
+        available_props = Symbol[:id, :className, :collapse_icon_color, :data, :height, :indent, :node_icon_color, :open_by_default, :overscan_count, :padding, :padding_bottom, :padding_top, :rowClassName, :row_height, :search_input_height, :searchable, :width]
         wild_props = Symbol[]
         return Component("tree", "Tree", "dash_tree_components", available_props, wild_props; kwargs...)
 end

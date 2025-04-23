@@ -35,6 +35,7 @@ const Tree = (props) => {
                     placeholder="Search..."
                     className="tree-search-input"
                     value={term}
+                    style={{height: props.search_input_height}}
                     onChange={(e) => setTerm(e.target.value)}
                 />
             ) : null}
@@ -42,7 +43,7 @@ const Tree = (props) => {
                 data={props.data}
                 searchTerm={term}
                 width={observedWidth}
-                height={observedHeight}
+                height={props.searchable ? observedHeight - props.search_input_height: observedHeight}
                 indent={props.indent}
                 rowHeight={props.row_height}
                 overscanCount={props.overscan_count}
@@ -50,7 +51,7 @@ const Tree = (props) => {
                 paddingBottom={props.padding_bottom}
                 padding={props.padding}
                 openByDefault={props.open_by_default}
-                className={props.className}
+                className={props.className ? props.className + ' tree': 'tree'}
                 rowClassName={props.rowClassName}
                 disableDrag
                 disableDrop
@@ -70,6 +71,7 @@ Tree.defaultProps = {
     collapse_icon_color: '#888888',
     node_icon_color: '#424242',
     searchable: true,
+    search_input_height: 25,
     width: null,
     height: null
 };
@@ -144,6 +146,11 @@ Tree.propTypes = {
      * Whether to include a search bar.
      */
     searchable: PropTypes.bool,
+
+    /**
+     * Height of the search bar in pixels.
+     */
+    search_input_height: PropTypes.number,
 
     /**
      * Class name of the tree.

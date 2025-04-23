@@ -126,6 +126,17 @@
           "computed": false
         }
       },
+      "search_input_height": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Height of the search bar in pixels.",
+        "defaultValue": {
+          "value": "25",
+          "computed": false
+        }
+      },
       "className": {
         "type": {
           "name": "string"

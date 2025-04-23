@@ -14,7 +14,8 @@ tree(id=NULL, className=NULL, collapse_icon_color=NULL,
 data=NULL, height=NULL, indent=NULL, node_icon_color=NULL,
 open_by_default=NULL, overscan_count=NULL, padding=NULL,
 padding_bottom=NULL, padding_top=NULL, rowClassName=NULL,
-row_height=NULL, searchable=NULL, width=NULL)
+row_height=NULL, search_input_height=NULL, searchable=NULL,
+width=NULL)
 }
 
 \arguments{
@@ -45,6 +46,8 @@ row_height=NULL, searchable=NULL, width=NULL)
 \item{rowClassName}{Character. Class name of the rows.}
 
 \item{row_height}{Numeric. The height of the rows.}
+
+\item{search_input_height}{Numeric. Height of the search bar in pixels.}
 
 \item{searchable}{Logical. Whether to include a search bar.}
 
