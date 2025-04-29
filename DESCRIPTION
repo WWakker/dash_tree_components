@@ -1,6 +1,6 @@
 Package: dashTreeComponents
 Title: Tree components for Dash
-Version: 0.0.7
+Version: 0.0.8
 Description: Tree components for Dash
 Depends: R (>= 3.0.2)
 Imports: 
