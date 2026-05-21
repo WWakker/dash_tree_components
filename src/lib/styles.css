@@ -6,11 +6,28 @@
     height: inherit;
     align-items: center;
     display: flex;
+    min-width: 0;
 }
 
-.tree-folder-icon, .tree-leaf-icon {
+.tree-folder-icon, .tree-leaf-icon, .tree-collapse-icon {
+    flex: none;
     margin-left: 3px;
     margin-right: 3px;
+}
+
+.tree-node-leaf-text, .tree-node-folder-text {
+    white-space: nowrap;
+    min-width: 0;
+    margin: 0;
+}
+
+/* Let each row grow to fit its content so the tree's own overflow:auto
+   container (react-arborist's `.tree` div) shows a single horizontal
+   scrollbar. `min-width: 100%` keeps short rows full-width so selection
+   highlights still span the visible area. */
+.tree-container [role="treeitem"] {
+    width: max-content !important;
+    min-width: 100%;
 }
 
 a.tree-node-leaf-text {
@@ -19,4 +36,6 @@ a.tree-node-leaf-text {
 
 .tree-search-input {
     border-radius: 10px;
+    box-sizing: border-box;
+    width: 100%;
 }

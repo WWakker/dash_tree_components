@@ -15,7 +15,7 @@ data=NULL, height=NULL, indent=NULL, node_icon_color=NULL,
 open_by_default=NULL, overscan_count=NULL, padding=NULL,
 padding_bottom=NULL, padding_top=NULL, rowClassName=NULL,
 row_height=NULL, search_input_height=NULL, searchable=NULL,
-width=NULL)
+selected_id=NULL, width=NULL)
 }
 
 \arguments{
@@ -27,7 +27,10 @@ width=NULL)
 
 \item{data}{Unnamed list. A list of dictionaries that defines the tree structure.}
 
-\item{height}{Numeric. The height of the Tree.}
+\item{height}{Numeric | character. The height of the Tree. Either a number (pixels) or a CSS string
+(e.g. '80vh', '100\%'). Defaults to '100\%' so the tree fills its parent.
+The parent must have a bounded height (e.g. via `style={'height':
+'80vh'}`) — a percentage of an auto-height parent will collapse to 0.}
 
 \item{indent}{Numeric. Indent of the Tree.}
 
@@ -51,7 +54,12 @@ width=NULL)
 
 \item{searchable}{Logical. Whether to include a search bar.}
 
-\item{width}{Numeric. The width of the Tree.}
+\item{selected_id}{Character. The id of the currently selected node. Updated when the user selects a
+node (click or keyboard) and may be set from Dash to programmatically
+select a node. `null` when no node is selected.}
+
+\item{width}{Numeric | character. The width of the Tree. Either a number (pixels) or a CSS string
+(e.g. '100\%'). Defaults to '100\%' so the tree fills its parent's width.}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

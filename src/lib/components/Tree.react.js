@@ -17,16 +17,27 @@ import '../styles.css'
 const Tree = (props) => {
     const [term, setTerm] = useState("");
 
-    // Using the resize observer to detect changes to container size
+    // ResizeObserver is on the inner flex-bounded div, not the outer container.
+    // This keeps measurement independent of the tree's own rendered height, so
+    // there is no feedback loop: the inner div is sized by flex layout (parent
+    // height minus the search input), and ResizeObserver just reports that.
     const { ref, width: observedWidth, height: observedHeight } = useResizeObserver();
+
+    const handleSelect = (nodes) => {
+        const new_id = nodes.length > 0 ? nodes[0].id : null;
+        if (new_id !== props.selected_id && props.setProps) {
+            props.setProps({ selected_id: new_id });
+        }
+    };
 
     return (
         <div id={props.id}
              className='tree-container'
-             ref={ref}
              style={{
                 width: props.width || '100%',
-                height: props.height || '100%',
+                height: props.height,
+                display: 'flex',
+                flexDirection: 'column',
             }}
              >
             {props.searchable ? (
@@ -35,15 +46,16 @@ const Tree = (props) => {
                     placeholder="Search..."
                     className="tree-search-input"
                     value={term}
-                    style={{height: props.search_input_height}}
+                    style={{height: props.search_input_height, flex: 'none'}}
                     onChange={(e) => setTerm(e.target.value)}
                 />
             ) : null}
+            <div ref={ref} style={{flex: 1, minHeight: 0}}>
             <TreeArborist
                 data={props.data}
                 searchTerm={term}
                 width={observedWidth}
-                height={props.searchable ? observedHeight - props.search_input_height: observedHeight}
+                height={observedHeight}
                 indent={props.indent}
                 rowHeight={props.row_height}
                 overscanCount={props.overscan_count}
@@ -53,6 +65,8 @@ const Tree = (props) => {
                 openByDefault={props.open_by_default}
                 className={props.className ? props.className + ' tree': 'tree'}
                 rowClassName={props.rowClassName}
+                selection={props.selected_id}
+                onSelect={handleSelect}
                 disableDrag
                 disableDrop
                 disableEdit
@@ -62,6 +76,7 @@ const Tree = (props) => {
             >
                 {Node}
             </TreeArborist>
+            </div>
         </div>
     );
 };
@@ -73,7 +88,8 @@ Tree.defaultProps = {
     searchable: true,
     search_input_height: 25,
     width: null,
-    height: null
+    height: '100%',
+    selected_id: null
 };
 
 Tree.propTypes = {
@@ -88,14 +104,18 @@ Tree.propTypes = {
     data: PropTypes.array.isRequired,
 
     /**
-     * The width of the Tree.
+     * The width of the Tree. Either a number (pixels) or a CSS string
+     * (e.g. '100%'). Defaults to '100%' so the tree fills its parent's width.
      */
-    width: PropTypes.number,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
     /**
-     * The height of the Tree.
+     * The height of the Tree. Either a number (pixels) or a CSS string
+     * (e.g. '80vh', '100%'). Defaults to '100%' so the tree fills its parent.
+     * The parent must have a bounded height (e.g. via `style={'height':
+     * '80vh'}`) — a percentage of an auto-height parent will collapse to 0.
      */
-    height: PropTypes.number,
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
     /**
      * The height of the rows.
@@ -161,6 +181,13 @@ Tree.propTypes = {
      * Class name of the rows.
      */
     rowClassName: PropTypes.string,
+
+    /**
+     * The id of the currently selected node. Updated when the user selects a
+     * node (click or keyboard) and may be set from Dash to programmatically
+     * select a node. `null` when no node is selected.
+     */
+    selected_id: PropTypes.string,
 
     /**
      * Dash-assigned callback that should be called to report property changes
