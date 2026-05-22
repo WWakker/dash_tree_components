@@ -50,6 +50,17 @@ a.tree-node-leaf-text {
     background: rgba(0, 0, 255, 0.08);
 }
 
+/* Default browser outline on the focused <li> is suppressed; we paint a
+   focus ring on the visible row instead so it tracks the row's visible box. */
+.tree-container .tree-li {
+    outline: none;
+}
+
+.tree-container .tree-li:focus-visible > .tree-row {
+    outline: 2px solid #4a90e2;
+    outline-offset: -2px;
+}
+
 /* Animated expand/collapse using the grid-template-rows 0fr/1fr trick. The
    inner wrapper hides overflow so children clip during the transition. */
 .tree-container .tree-children {

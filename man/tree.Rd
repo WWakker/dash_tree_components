@@ -6,20 +6,24 @@
 \title{Tree component}
 
 \description{
-Tree is a Dash component that renders a hierarchical tree from a list of dictionaries. It's typically used as a table of contents: leaves can carry an `href` to scroll the host page to a section, and selection is exposed to Dash callbacks via `selected_id`. Folder expand/collapse is animated with CSS transitions.
+Tree is a Dash component that renders a hierarchical tree from a list of dictionaries. Folder expand/collapse is animated with CSS transitions. Selection is exposed to Dash callbacks via `selected_id`. Implements the WAI-ARIA `tree` pattern with full keyboard navigation.
 }
 
 \usage{
-tree(id=NULL, className=NULL, collapse_icon_color=NULL,
-data=NULL, height=NULL, indent=NULL, node_icon_color=NULL,
-open_by_default=NULL, padding=NULL, padding_bottom=NULL,
-padding_top=NULL, rowClassName=NULL, row_height=NULL,
+tree(id=NULL, aria_label=NULL, className=NULL,
+collapse_icon_color=NULL, data=NULL, height=NULL,
+indent=NULL, node_icon_color=NULL, open_by_default=NULL,
+padding=NULL, padding_bottom=NULL, padding_top=NULL,
+rowClassName=NULL, row_height=NULL,
 search_input_height=NULL, searchable=NULL, selected_id=NULL,
 width=NULL)
 }
 
 \arguments{
 \item{id}{Character. The ID used to identify this component in Dash callbacks.}
+
+\item{aria_label}{Character. Accessible label for the tree, exposed as the DOM `aria-label`
+attribute on the root `role="tree"` element.}
 
 \item{className}{Character. Class name of the outer tree container.}
 
@@ -60,8 +64,8 @@ The parent must have a bounded height (e.g. via `style={'height':
 automatically.}
 
 \item{selected_id}{Character. The id of the currently selected node. Updated when the user clicks a
-row, and may be set from Dash to programmatically select a node. `null`
-when no node is selected.}
+row or activates one via Enter/Space, and may be set from Dash to
+programmatically select a node. `null` when no node is selected.}
 
 \item{width}{Numeric | character. The width of the Tree. Either a number (pixels) or a CSS string
 (e.g. '100\%'). Defaults to '100\%' so the tree fills its parent's width.}

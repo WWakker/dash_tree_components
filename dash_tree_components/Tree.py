@@ -18,15 +18,18 @@ NumberType = typing.Union[
 class Tree(Component):
     """A Tree component.
 Tree is a Dash component that renders a hierarchical tree from a list of
-dictionaries. It's typically used as a table of contents: leaves can carry
-an `href` to scroll the host page to a section, and selection is exposed
-to Dash callbacks via `selected_id`. Folder expand/collapse is animated
-with CSS transitions.
+dictionaries. Folder expand/collapse is animated with CSS transitions.
+Selection is exposed to Dash callbacks via `selected_id`. Implements the
+WAI-ARIA `tree` pattern with full keyboard navigation.
 
 Keyword arguments:
 
 - id (string; optional):
     The ID used to identify this component in Dash callbacks.
+
+- aria_label (string; optional):
+    Accessible label for the tree, exposed as the DOM `aria-label`
+    attribute on the root `role=\"tree\"` element.
 
 - className (string; optional):
     Class name of the outer tree container.
@@ -83,8 +86,9 @@ Keyword arguments:
 
 - selected_id (string; optional):
     The id of the currently selected node. Updated when the user
-    clicks a row, and may be set from Dash to programmatically select
-    a node. `None` when no node is selected.
+    clicks a row or activates one via Enter/Space, and may be set from
+    Dash to programmatically select a node. `None` when no node is
+    selected.
 
 - width (number | string; optional):
     The width of the Tree. Either a number (pixels) or a CSS string
@@ -114,12 +118,13 @@ Keyword arguments:
         search_input_height: typing.Optional[NumberType] = None,
         className: typing.Optional[str] = None,
         rowClassName: typing.Optional[str] = None,
+        aria_label: typing.Optional[str] = None,
         selected_id: typing.Optional[str] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self._prop_names = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self.available_properties = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()
