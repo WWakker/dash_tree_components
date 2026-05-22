@@ -1,81 +1,72 @@
-import React, {Component, useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Tree as TreeArborist } from "react-arborist";
-import useResizeObserver from "use-resize-observer";
-import { SiHtml5, SiJavascript, SiCss3, SiMarkdown } from "react-icons/si";
-import { FaNpm } from "react-icons/fa";
-import { AiFillFolder, AiFillFile } from "react-icons/ai";
-import { MdArrowRight, MdArrowDropDown, MdEdit } from "react-icons/md";
 import Node from './Node.react';
-import '../styles.css'
+import '../styles.css';
 
 /**
- * Tree is a dash component which can be used as table of contents.
- * It takes an array of dictionaries, `data`, and
- * displays it as a hierarchical tree structure.
+ * Tree is a Dash component that renders a hierarchical tree from a list of
+ * dictionaries. It's typically used as a table of contents: leaves can carry
+ * an `href` to scroll the host page to a section, and selection is exposed
+ * to Dash callbacks via `selected_id`. Folder expand/collapse is animated
+ * with CSS transitions.
  */
 const Tree = (props) => {
-    const [term, setTerm] = useState("");
+    const [term, setTerm] = useState('');
 
-    // ResizeObserver is on the inner flex-bounded div, not the outer container.
-    // This keeps measurement independent of the tree's own rendered height, so
-    // there is no feedback loop: the inner div is sized by flex layout (parent
-    // height minus the search input), and ResizeObserver just reports that.
-    const { ref, width: observedWidth, height: observedHeight } = useResizeObserver();
-
-    const handleSelect = (nodes) => {
-        const new_id = nodes.length > 0 ? nodes[0].id : null;
-        if (new_id !== props.selected_id && props.setProps) {
-            props.setProps({ selected_id: new_id });
+    const handleSelect = (id) => {
+        if (props.setProps && id !== props.selected_id) {
+            props.setProps({ selected_id: id });
         }
     };
 
+    const search = term.trim().toLowerCase();
+
     return (
         <div id={props.id}
-             className='tree-container'
+             className={`tree-container ${props.className || ''}`.trim()}
              style={{
-                width: props.width || '100%',
-                height: props.height,
-                display: 'flex',
-                flexDirection: 'column',
-            }}
-             >
+                 width: props.width || '100%',
+                 height: props.height,
+                 display: 'flex',
+                 flexDirection: 'column',
+             }}>
             {props.searchable ? (
                 <input
                     type="text"
                     placeholder="Search..."
                     className="tree-search-input"
                     value={term}
-                    style={{height: props.search_input_height, flex: 'none'}}
+                    style={{ height: props.search_input_height, flex: 'none' }}
                     onChange={(e) => setTerm(e.target.value)}
                 />
             ) : null}
-            <div ref={ref} style={{flex: 1, minHeight: 0}}>
-            <TreeArborist
-                data={props.data}
-                searchTerm={term}
-                width={observedWidth}
-                height={observedHeight}
-                indent={props.indent}
-                rowHeight={props.row_height}
-                overscanCount={props.overscan_count}
-                paddingTop={props.padding_top}
-                paddingBottom={props.padding_bottom}
-                padding={props.padding}
-                openByDefault={props.open_by_default}
-                className={props.className ? props.className + ' tree': 'tree'}
-                rowClassName={props.rowClassName}
-                selection={props.selected_id}
-                onSelect={handleSelect}
-                disableDrag
-                disableDrop
-                disableEdit
-                disableMultiSelection
-                collapse_icon_color={props.collapse_icon_color}
-                node_icon_color={props.node_icon_color}
-            >
-                {Node}
-            </TreeArborist>
+            <div className="tree-scroll" style={{
+                flex: 1,
+                minHeight: 0,
+                overflow: 'auto',
+                paddingTop: props.padding_top != null ? props.padding_top : props.padding,
+                paddingBottom: props.padding_bottom != null ? props.padding_bottom : props.padding,
+            }}>
+                <div className="tree-content">
+                    <ul className="tree-ul">
+                        {props.data.map(node => (
+                            <Node
+                                key={node.id}
+                                node={node}
+                                level={0}
+                                term={search}
+                                selectedId={props.selected_id}
+                                onSelect={handleSelect}
+                                collapseIconColor={props.collapse_icon_color}
+                                nodeIconColor={props.node_icon_color}
+                                openByDefault={props.open_by_default}
+                                indent={props.indent}
+                                rowHeight={props.row_height}
+                                rowClassName={props.rowClassName}
+                            />
+                        ))}
+                    </ul>
+                </div>
             </div>
         </div>
     );
@@ -87,9 +78,11 @@ Tree.defaultProps = {
     node_icon_color: '#424242',
     searchable: true,
     search_input_height: 25,
+    indent: 24,
+    row_height: 30,
     width: null,
     height: '100%',
-    selected_id: null
+    selected_id: null,
 };
 
 Tree.propTypes = {
@@ -99,7 +92,11 @@ Tree.propTypes = {
     id: PropTypes.string,
 
     /**
-     * A list of dictionaries that defines the tree structure.
+     * A list of dictionaries that defines the tree structure. Each node has
+     * `id` (string, required), `name` (display text), optional `children`
+     * (array — presence determines leaf vs. folder), optional `href`
+     * (rendered as a link on leaves), and optional `icon_color` overriding
+     * `node_icon_color` for that node.
      */
     data: PropTypes.array.isRequired,
 
@@ -118,52 +115,50 @@ Tree.propTypes = {
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
     /**
-     * The height of the rows.
+     * Minimum height of each row in pixels. Default 30.
      */
     row_height: PropTypes.number,
 
     /**
-     * Overscan count.
-     */
-    overscan_count: PropTypes.number,
-
-    /**
-     * Indent of the Tree.
+     * Per-level indentation in pixels. Default 24.
      */
     indent: PropTypes.number,
 
     /**
-     * Top padding.
+     * Top padding of the scrollable area.
      */
     padding_top: PropTypes.number,
 
     /**
-     * Bottom padding.
+     * Bottom padding of the scrollable area.
      */
     padding_bottom: PropTypes.number,
 
     /**
-     * Padding.
+     * Padding applied to both top and bottom of the scrollable area if
+     * `padding_top` / `padding_bottom` are not set.
      */
     padding: PropTypes.number,
 
     /**
-     * Color of collapse icons.
+     * Color of the collapse (plus/minus) icons.
      */
     collapse_icon_color: PropTypes.string,
 
     /**
-     * Color of collapse icons.
+     * Color of the node (folder/leaf) icons. Overridable per node via
+     * `icon_color` in the data.
      */
     node_icon_color: PropTypes.string,
 
     /**
-     * Open Tree by default.
+     * Whether folders are open by default.
      */
     open_by_default: PropTypes.bool,
 
     /**
-     * Whether to include a search bar.
+     * Whether to include a search bar. Searching expands all matching paths
+     * automatically.
      */
     searchable: PropTypes.bool,
 
@@ -173,19 +168,19 @@ Tree.propTypes = {
     search_input_height: PropTypes.number,
 
     /**
-     * Class name of the tree.
+     * Class name of the outer tree container.
      */
     className: PropTypes.string,
 
     /**
-     * Class name of the rows.
+     * Class name applied to each row.
      */
     rowClassName: PropTypes.string,
 
     /**
-     * The id of the currently selected node. Updated when the user selects a
-     * node (click or keyboard) and may be set from Dash to programmatically
-     * select a node. `null` when no node is selected.
+     * The id of the currently selected node. Updated when the user clicks a
+     * row, and may be set from Dash to programmatically select a node. `null`
+     * when no node is selected.
      */
     selected_id: PropTypes.string,
 
@@ -193,7 +188,7 @@ Tree.propTypes = {
      * Dash-assigned callback that should be called to report property changes
      * to Dash, to make them available for callbacks.
      */
-    setProps: PropTypes.func
+    setProps: PropTypes.func,
 };
 
-export default Tree
+export default Tree;

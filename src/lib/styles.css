@@ -1,14 +1,3 @@
-[role="treeitem"] {
-  transition: top 0.2s ease-in;
-}
-
-.tree-node-container, .tree-node-content {
-    height: inherit;
-    align-items: center;
-    display: flex;
-    min-width: 0;
-}
-
 .tree-folder-icon, .tree-leaf-icon, .tree-collapse-icon {
     flex: none;
     margin-left: 3px;
@@ -21,15 +10,6 @@
     margin: 0;
 }
 
-/* Let each row grow to fit its content so the tree's own overflow:auto
-   container (react-arborist's `.tree` div) shows a single horizontal
-   scrollbar. `min-width: 100%` keeps short rows full-width so selection
-   highlights still span the visible area. */
-.tree-container [role="treeitem"] {
-    width: max-content !important;
-    min-width: 100%;
-}
-
 a.tree-node-leaf-text {
     text-decoration: none;
 }
@@ -38,4 +18,51 @@ a.tree-node-leaf-text {
     border-radius: 10px;
     box-sizing: border-box;
     width: 100%;
+}
+
+.tree-container .tree-ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tree-container .tree-li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Inner wrapper grows to widest row so the scroll container shows a single
+   horizontal scrollbar when any row overflows. */
+.tree-container .tree-content {
+    width: max-content;
+    min-width: 100%;
+}
+
+.tree-container .tree-row {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.tree-container .tree-row.selected {
+    background: rgba(0, 0, 255, 0.08);
+}
+
+/* Animated expand/collapse using the grid-template-rows 0fr/1fr trick. The
+   inner wrapper hides overflow so children clip during the transition. */
+.tree-container .tree-children {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 200ms ease;
+}
+
+.tree-container .tree-children.open {
+    grid-template-rows: 1fr;
+}
+
+.tree-container .tree-children-inner {
+    overflow: hidden;
+    min-height: 0;
 }

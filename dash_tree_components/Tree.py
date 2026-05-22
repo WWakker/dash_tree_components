@@ -17,9 +17,11 @@ NumberType = typing.Union[
 
 class Tree(Component):
     """A Tree component.
-Tree is a dash component which can be used as table of contents.
-It takes an array of dictionaries, `data`, and
-displays it as a hierarchical tree structure.
+Tree is a Dash component that renders a hierarchical tree from a list of
+dictionaries. It's typically used as a table of contents: leaves can carry
+an `href` to scroll the host page to a section, and selection is exposed
+to Dash callbacks via `selected_id`. Folder expand/collapse is animated
+with CSS transitions.
 
 Keyword arguments:
 
@@ -27,13 +29,17 @@ Keyword arguments:
     The ID used to identify this component in Dash callbacks.
 
 - className (string; optional):
-    Class name of the tree.
+    Class name of the outer tree container.
 
 - collapse_icon_color (string; default '#888888'):
-    Color of collapse icons.
+    Color of the collapse (plus/minus) icons.
 
 - data (list; required):
-    A list of dictionaries that defines the tree structure.
+    A list of dictionaries that defines the tree structure. Each node
+    has `id` (string, required), `name` (display text), optional
+    `children` (array — presence determines leaf vs. folder), optional
+    `href` (rendered as a link on leaves), and optional `icon_color`
+    overriding `node_icon_color` for that node.
 
 - height (number | string; default '100%'):
     The height of the Tree. Either a number (pixels) or a CSS string
@@ -42,43 +48,43 @@ Keyword arguments:
     `style={'height': '80vh'}`) — a percentage of an auto-height
     parent will collapse to 0.
 
-- indent (number; optional):
-    Indent of the Tree.
+- indent (number; default 24):
+    Per-level indentation in pixels. Default 24.
 
 - node_icon_color (string; default '#424242'):
-    Color of collapse icons.
+    Color of the node (folder/leaf) icons. Overridable per node via
+    `icon_color` in the data.
 
 - open_by_default (boolean; default True):
-    Open Tree by default.
-
-- overscan_count (number; optional):
-    Overscan count.
+    Whether folders are open by default.
 
 - padding (number; optional):
-    Padding.
+    Padding applied to both top and bottom of the scrollable area if
+    `padding_top` / `padding_bottom` are not set.
 
 - padding_bottom (number; optional):
-    Bottom padding.
+    Bottom padding of the scrollable area.
 
 - padding_top (number; optional):
-    Top padding.
+    Top padding of the scrollable area.
 
 - rowClassName (string; optional):
-    Class name of the rows.
+    Class name applied to each row.
 
-- row_height (number; optional):
-    The height of the rows.
+- row_height (number; default 30):
+    Minimum height of each row in pixels. Default 30.
 
 - search_input_height (number; default 25):
     Height of the search bar in pixels.
 
 - searchable (boolean; default True):
-    Whether to include a search bar.
+    Whether to include a search bar. Searching expands all matching
+    paths automatically.
 
 - selected_id (string; optional):
     The id of the currently selected node. Updated when the user
-    selects a node (click or keyboard) and may be set from Dash to
-    programmatically select a node. `None` when no node is selected.
+    clicks a row, and may be set from Dash to programmatically select
+    a node. `None` when no node is selected.
 
 - width (number | string; optional):
     The width of the Tree. Either a number (pixels) or a CSS string
@@ -97,7 +103,6 @@ Keyword arguments:
         width: typing.Optional[typing.Union[NumberType, str]] = None,
         height: typing.Optional[typing.Union[NumberType, str]] = None,
         row_height: typing.Optional[NumberType] = None,
-        overscan_count: typing.Optional[NumberType] = None,
         indent: typing.Optional[NumberType] = None,
         padding_top: typing.Optional[NumberType] = None,
         padding_bottom: typing.Optional[NumberType] = None,
@@ -112,9 +117,9 @@ Keyword arguments:
         selected_id: typing.Optional[str] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'overscan_count', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self._prop_names = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'overscan_count', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self.available_properties = ['id', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()
