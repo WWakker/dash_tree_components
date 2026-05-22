@@ -93,6 +93,12 @@ a.tree-node-leaf-text {
     transition: grid-template-rows 200ms ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .tree-container .tree-children {
+        transition: none;
+    }
+}
+
 .tree-container .tree-children.open {
     grid-template-rows: 1fr;
 }

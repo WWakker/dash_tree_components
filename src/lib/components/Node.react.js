@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react';
-import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
-import { MdBarChart } from "react-icons/md";
-import { FaFolderOpen } from "react-icons/fa";
+import { AiOutlinePlusSquare, AiOutlineMinusSquare, MdBarChart, FaFolderOpen } from '../icons';
 
 const nodeMatches = (node, term) => {
     if (node.name.toLowerCase().includes(term)) return true;
