@@ -166,7 +166,7 @@ app.layout = html.Div([
                     row_height=30,
                     searchable=True,
                 ),
-                style={'flex': 1, 'minHeight': 0, 'backgroundColor': 'lightblue'},
+                style={'flex': 1, 'minHeight': 0, 'backgroundColor': '#f0faff'},
             ),
             html.Label('Clicked node:', htmlFor='clicked-node',
                        style={'marginTop': '10px'}),

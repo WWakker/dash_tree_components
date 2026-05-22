@@ -12,6 +12,7 @@
 
 a.tree-node-leaf-text {
     text-decoration: none;
+    color: inherit;
 }
 
 .tree-search-input {
@@ -46,17 +47,40 @@ a.tree-node-leaf-text {
     box-sizing: border-box;
 }
 
-.tree-container .tree-row.selected {
-    background: rgba(0, 0, 255, 0.08);
+/* Inner wrapper that hugs the icons + text. Backgrounds and the focus ring
+   live here, not on .tree-row, so they don't span the entire scrollable
+   width when rows are wider than their content. */
+.tree-container .tree-row-content {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 4px;
+    border-radius: 3px;
+    color: black;
 }
 
-/* Default browser outline on the focused <li> is suppressed; we paint a
-   focus ring on the visible row instead so it tracks the row's visible box. */
+.tree-container .tree-row:hover:not(.selected) .tree-row-content {
+    background-color: var(--tree-hover-bg);
+    color: white;
+}
+
+.tree-container .tree-row.selected .tree-row-content {
+    background-color: var(--tree-selected-bg);
+    color: white;
+}
+
+.tree-container .tree-row:hover:not(.selected) .tree-row-content svg,
+.tree-container .tree-row.selected .tree-row-content svg {
+    color: white;
+}
+
+/* Suppress default outline on the focused <li>; paint our own on the
+   inner content so it matches the background box. */
 .tree-container .tree-li {
     outline: none;
 }
 
-.tree-container .tree-li:focus-visible > .tree-row {
+.tree-container .tree-li:focus-visible .tree-row-content {
     outline: 2px solid #4a90e2;
     outline-offset: -2px;
 }

@@ -276,6 +276,8 @@ const Tree = (props) => {
                  height: props.height,
                  display: 'flex',
                  flexDirection: 'column',
+                 '--tree-selected-bg': props.selected_color,
+                 '--tree-hover-bg': props.hover_color,
              }}>
             {props.searchable ? (
                 <input
@@ -327,6 +329,8 @@ Tree.defaultProps = {
     width: null,
     height: '100%',
     selected_id: null,
+    selected_color: '#3392e3',
+    hover_color: '#76b6ec',
 };
 
 Tree.propTypes = {
@@ -394,6 +398,17 @@ Tree.propTypes = {
      * `icon_color` in the data.
      */
     node_icon_color: PropTypes.string,
+
+    /**
+     * Background color of the currently-selected row. Default `#3392e3`.
+     */
+    selected_color: PropTypes.string,
+
+    /**
+     * Background color of a row when the mouse is over it. Does not apply to
+     * the selected row (selection wins). Default `#76b6ec`.
+     */
+    hover_color: PropTypes.string,
 
     /**
      * Whether folders are open by default. Only used to derive the initial

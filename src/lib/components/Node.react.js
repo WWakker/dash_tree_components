@@ -54,7 +54,7 @@ const Node = ({ node, level, positionInSet, sizeOfSet, tree }) => {
                  onClick={handleRowClick}
                  style={{ paddingLeft: level * tree.indent + 4, minHeight: tree.rowHeight }}>
                 {isLeaf ? (
-                    <>
+                    <span className="tree-row-content">
                         <MdBarChart className="tree-leaf-icon" color={iconColor} />
                         {node.href
                             ? <a className="tree-node-leaf-text"
@@ -64,14 +64,16 @@ const Node = ({ node, level, positionInSet, sizeOfSet, tree }) => {
                                   {node.name}
                               </a>
                             : <span className="tree-node-leaf-text" title={node.name}>{node.name}</span>}
-                    </>
+                    </span>
                 ) : (
                     <>
                         {expanded
                             ? <AiOutlineMinusSquare className="tree-collapse-icon" color={tree.collapseIconColor} />
                             : <AiOutlinePlusSquare className="tree-collapse-icon" color={tree.collapseIconColor} />}
-                        <FaFolderOpen className="tree-folder-icon" color={iconColor} />
-                        <span className="tree-node-folder-text" title={node.name}>{node.name}</span>
+                        <span className="tree-row-content">
+                            <FaFolderOpen className="tree-folder-icon" color={iconColor} />
+                            <span className="tree-node-folder-text" title={node.name}>{node.name}</span>
+                        </span>
                     </>
                 )}
             </div>

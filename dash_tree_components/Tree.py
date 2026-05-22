@@ -58,6 +58,10 @@ Keyword arguments:
     `style={'height': '80vh'}`) — a percentage of an auto-height
     parent will collapse to 0.
 
+- hover_color (string; default '#76b6ec'):
+    Background color of a row when the mouse is over it. Does not
+    apply to the selected row (selection wins). Default `#76b6ec`.
+
 - indent (number; default 24):
     Per-level indentation in pixels. Default 24.
 
@@ -92,6 +96,9 @@ Keyword arguments:
     Whether to include a search bar. Searching expands all matching
     paths automatically.
 
+- selected_color (string; default '#3392e3'):
+    Background color of the currently-selected row. Default `#3392e3`.
+
 - selected_id (string; optional):
     The id of the currently selected node. Updated when the user
     clicks a row or activates one via Enter/Space, and may be set from
@@ -121,6 +128,8 @@ Keyword arguments:
         padding: typing.Optional[NumberType] = None,
         collapse_icon_color: typing.Optional[str] = None,
         node_icon_color: typing.Optional[str] = None,
+        selected_color: typing.Optional[str] = None,
+        hover_color: typing.Optional[str] = None,
         open_by_default: typing.Optional[bool] = None,
         searchable: typing.Optional[bool] = None,
         search_input_height: typing.Optional[NumberType] = None,
@@ -131,9 +140,9 @@ Keyword arguments:
         expanded_ids: typing.Optional[typing.Sequence[str]] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'expanded_ids', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self._prop_names = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'expanded_ids', 'height', 'hover_color', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_color', 'selected_id', 'width']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'expanded_ids', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self.available_properties = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'expanded_ids', 'height', 'hover_color', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_color', 'selected_id', 'width']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()

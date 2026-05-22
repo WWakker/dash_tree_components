@@ -12,11 +12,11 @@ Tree is a Dash component that renders a hierarchical tree from a list of diction
 \usage{
 tree(id=NULL, aria_label=NULL, className=NULL,
 collapse_icon_color=NULL, data=NULL, expanded_ids=NULL,
-height=NULL, indent=NULL, node_icon_color=NULL,
-open_by_default=NULL, padding=NULL, padding_bottom=NULL,
-padding_top=NULL, rowClassName=NULL, row_height=NULL,
-search_input_height=NULL, searchable=NULL, selected_id=NULL,
-width=NULL)
+height=NULL, hover_color=NULL, indent=NULL,
+node_icon_color=NULL, open_by_default=NULL, padding=NULL,
+padding_bottom=NULL, padding_top=NULL, rowClassName=NULL,
+row_height=NULL, search_input_height=NULL, searchable=NULL,
+selected_color=NULL, selected_id=NULL, width=NULL)
 }
 
 \arguments{
@@ -45,6 +45,9 @@ is derived from `open_by_default`.}
 The parent must have a bounded height (e.g. via `style={'height':
 '80vh'}`) — a percentage of an auto-height parent will collapse to 0.}
 
+\item{hover_color}{Character. Background color of a row when the mouse is over it. Does not apply to
+the selected row (selection wins). Default `#76b6ec`.}
+
 \item{indent}{Numeric. Per-level indentation in pixels. Default 24.}
 
 \item{node_icon_color}{Character. Color of the node (folder/leaf) icons. Overridable per node via
@@ -68,6 +71,8 @@ The parent must have a bounded height (e.g. via `style={'height':
 
 \item{searchable}{Logical. Whether to include a search bar. Searching expands all matching paths
 automatically.}
+
+\item{selected_color}{Character. Background color of the currently-selected row. Default `#3392e3`.}
 
 \item{selected_id}{Character. The id of the currently selected node. Updated when the user clicks a
 row or activates one via Enter/Space, and may be set from Dash to
