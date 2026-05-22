@@ -1,22 +1,109 @@
-[role="treeitem"] {
-  transition: top 0.2s ease-in;
-}
-
-.tree-node-container, .tree-node-content {
-    height: inherit;
-    align-items: center;
-    display: flex;
-}
-
-.tree-folder-icon, .tree-leaf-icon {
+.tree-folder-icon, .tree-leaf-icon, .tree-collapse-icon {
+    flex: none;
     margin-left: 3px;
     margin-right: 3px;
 }
 
+.tree-node-leaf-text, .tree-node-folder-text {
+    white-space: nowrap;
+    min-width: 0;
+    margin: 0;
+}
+
 a.tree-node-leaf-text {
     text-decoration: none;
+    color: inherit;
 }
 
 .tree-search-input {
     border-radius: 10px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.tree-container .tree-ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tree-container .tree-li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Inner wrapper grows to widest row so the scroll container shows a single
+   horizontal scrollbar when any row overflows. */
+.tree-container .tree-content {
+    width: max-content;
+    min-width: 100%;
+}
+
+.tree-container .tree-row {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+/* Inner wrapper that hugs the icons + text. Backgrounds and the focus ring
+   live here, not on .tree-row, so they don't span the entire scrollable
+   width when rows are wider than their content. */
+.tree-container .tree-row-content {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 4px;
+    border-radius: 3px;
+    color: black;
+}
+
+.tree-container .tree-row:hover:not(.selected) .tree-row-content {
+    background-color: var(--tree-hover-bg);
+    color: white;
+}
+
+.tree-container .tree-row.selected .tree-row-content {
+    background-color: var(--tree-selected-bg);
+    color: white;
+}
+
+.tree-container .tree-row:hover:not(.selected) .tree-row-content svg,
+.tree-container .tree-row.selected .tree-row-content svg {
+    color: white;
+}
+
+/* Suppress default outline on the focused <li>; paint our own on the
+   inner content so it matches the background box. */
+.tree-container .tree-li {
+    outline: none;
+}
+
+.tree-container .tree-li:focus-visible .tree-row-content {
+    outline: 2px solid #4a90e2;
+    outline-offset: -2px;
+}
+
+/* Animated expand/collapse using the grid-template-rows 0fr/1fr trick. The
+   inner wrapper hides overflow so children clip during the transition. */
+.tree-container .tree-children {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tree-container .tree-children {
+        transition: none;
+    }
+}
+
+.tree-container .tree-children.open {
+    grid-template-rows: 1fr;
+}
+
+.tree-container .tree-children-inner {
+    overflow: hidden;
+    min-height: 0;
 }

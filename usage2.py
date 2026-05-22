@@ -166,12 +166,12 @@ app.layout = html.Div([
                     row_height=30,
                     searchable=True,
                 ),
-                style={'flex': 1, 'minHeight': 0, 'backgroundColor': '#f0faff'},
+                style={'flex': 1, 'minHeight': 0, 'backgroundColor': 'lightblue'},
             ),
-            html.Label('Clicked node:', htmlFor='clicked-node',
-                       style={'marginTop': '10px'}),
-            dcc.Input(id='clicked-node', type='text', value='',
-                      readOnly=True, style={'width': '100%'}),
+            # html.Label('Clicked node:', htmlFor='clicked-node',
+            #            style={'marginTop': '10px'}),
+            # dcc.Input(id='clicked-node', type='text', value='',
+            #           readOnly=True, style={'width': '100%'}),
         ],
         style={
             'width': '25%',
@@ -189,9 +189,9 @@ app.layout = html.Div([
 ], style={'display': 'flex', 'alignItems': 'flex-start'})
 
 
-@callback(Output('clicked-node', 'value'), Input('tree', 'selected_id'))
-def show_selected(selected_id):
-    return selected_id or ''
+# @callback(Output('clicked-node', 'value'), Input('tree', 'selected_id'))
+# def show_selected(selected_id):
+#     return selected_id or ''
 
 
 if __name__ == '__main__':
