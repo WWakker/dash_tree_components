@@ -8,8 +8,9 @@ export tree
 A Tree component.
 Tree is a Dash component that renders a hierarchical tree from a list of
 dictionaries. Folder expand/collapse is animated with CSS transitions.
-Selection is exposed to Dash callbacks via `selected_id`. Implements the
-WAI-ARIA `tree` pattern with full keyboard navigation.
+Selection is exposed to Dash callbacks via `selected_id`, expanded folders
+via `expanded_ids`. Implements the WAI-ARIA `tree` pattern with full
+keyboard navigation.
 Keyword arguments:
 - `id` (String; optional): The ID used to identify this component in Dash callbacks.
 - `aria_label` (String; optional): Accessible label for the tree, exposed as the DOM `aria-label`
@@ -21,6 +22,10 @@ attribute on the root `role="tree"` element.
 (array — presence determines leaf vs. folder), optional `href`
 (rendered as a link on leaves), and optional `icon_color` overriding
 `node_icon_color` for that node.
+- `expanded_ids` (Array of Strings; optional): Ids of currently-expanded folders. Both read (the tree pushes
+updates here on toggle) and write (setting it from Dash expands or
+collapses the corresponding folders). When unset, the initial value
+is derived from `open_by_default`.
 - `height` (Real | String; optional): The height of the Tree. Either a number (pixels) or a CSS string
 (e.g. '80vh', '100%'). Defaults to '100%' so the tree fills its parent.
 The parent must have a bounded height (e.g. via `style={'height':
@@ -28,7 +33,8 @@ The parent must have a bounded height (e.g. via `style={'height':
 - `indent` (Real; optional): Per-level indentation in pixels. Default 24.
 - `node_icon_color` (String; optional): Color of the node (folder/leaf) icons. Overridable per node via
 `icon_color` in the data.
-- `open_by_default` (Bool; optional): Whether folders are open by default.
+- `open_by_default` (Bool; optional): Whether folders are open by default. Only used to derive the initial
+`expanded_ids` if the caller doesn't supply one.
 - `padding` (Real; optional): Padding applied to both top and bottom of the scrollable area if
 `padding_top` / `padding_bottom` are not set.
 - `padding_bottom` (Real; optional): Bottom padding of the scrollable area.
@@ -40,12 +46,13 @@ The parent must have a bounded height (e.g. via `style={'height':
 automatically.
 - `selected_id` (String; optional): The id of the currently selected node. Updated when the user clicks a
 row or activates one via Enter/Space, and may be set from Dash to
-programmatically select a node. `null` when no node is selected.
+programmatically select a node. Setting this from Dash auto-expands
+the path to the node and scrolls it into view.
 - `width` (Real | String; optional): The width of the Tree. Either a number (pixels) or a CSS string
 (e.g. '100%'). Defaults to '100%' so the tree fills its parent's width.
 """
 function tree(; kwargs...)
-        available_props = Symbol[:id, :aria_label, :className, :collapse_icon_color, :data, :height, :indent, :node_icon_color, :open_by_default, :padding, :padding_bottom, :padding_top, :rowClassName, :row_height, :search_input_height, :searchable, :selected_id, :width]
+        available_props = Symbol[:id, :aria_label, :className, :collapse_icon_color, :data, :expanded_ids, :height, :indent, :node_icon_color, :open_by_default, :padding, :padding_bottom, :padding_top, :rowClassName, :row_height, :search_input_height, :searchable, :selected_id, :width]
         wild_props = Symbol[]
         return Component("tree", "Tree", "dash_tree_components", available_props, wild_props; kwargs...)
 end

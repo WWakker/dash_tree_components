@@ -19,8 +19,9 @@ class Tree(Component):
     """A Tree component.
 Tree is a Dash component that renders a hierarchical tree from a list of
 dictionaries. Folder expand/collapse is animated with CSS transitions.
-Selection is exposed to Dash callbacks via `selected_id`. Implements the
-WAI-ARIA `tree` pattern with full keyboard navigation.
+Selection is exposed to Dash callbacks via `selected_id`, expanded folders
+via `expanded_ids`. Implements the WAI-ARIA `tree` pattern with full
+keyboard navigation.
 
 Keyword arguments:
 
@@ -44,6 +45,12 @@ Keyword arguments:
     `href` (rendered as a link on leaves), and optional `icon_color`
     overriding `node_icon_color` for that node.
 
+- expanded_ids (list of strings; optional):
+    Ids of currently-expanded folders. Both read (the tree pushes
+    updates here on toggle) and write (setting it from Dash expands or
+    collapses the corresponding folders). When unset, the initial
+    value is derived from `open_by_default`.
+
 - height (number | string; default '100%'):
     The height of the Tree. Either a number (pixels) or a CSS string
     (e.g. '80vh', '100%'). Defaults to '100%' so the tree fills its
@@ -59,7 +66,8 @@ Keyword arguments:
     `icon_color` in the data.
 
 - open_by_default (boolean; default True):
-    Whether folders are open by default.
+    Whether folders are open by default. Only used to derive the
+    initial `expanded_ids` if the caller doesn't supply one.
 
 - padding (number; optional):
     Padding applied to both top and bottom of the scrollable area if
@@ -87,8 +95,8 @@ Keyword arguments:
 - selected_id (string; optional):
     The id of the currently selected node. Updated when the user
     clicks a row or activates one via Enter/Space, and may be set from
-    Dash to programmatically select a node. `None` when no node is
-    selected.
+    Dash to programmatically select a node. Setting this from Dash
+    auto-expands the path to the node and scrolls it into view.
 
 - width (number | string; optional):
     The width of the Tree. Either a number (pixels) or a CSS string
@@ -120,11 +128,12 @@ Keyword arguments:
         rowClassName: typing.Optional[str] = None,
         aria_label: typing.Optional[str] = None,
         selected_id: typing.Optional[str] = None,
+        expanded_ids: typing.Optional[typing.Sequence[str]] = None,
         **kwargs
     ):
-        self._prop_names = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self._prop_names = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'expanded_ids', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
+        self.available_properties = ['id', 'aria_label', 'className', 'collapse_icon_color', 'data', 'expanded_ids', 'height', 'indent', 'node_icon_color', 'open_by_default', 'padding', 'padding_bottom', 'padding_top', 'rowClassName', 'row_height', 'search_input_height', 'searchable', 'selected_id', 'width']
         self.available_wildcard_properties =            []
         _explicit_args = kwargs.pop('_explicit_args')
         _locals = locals()

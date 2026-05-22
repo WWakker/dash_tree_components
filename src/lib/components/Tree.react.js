@@ -9,39 +9,92 @@ const nodeMatches = (node, term) => {
     return false;
 };
 
+const collectFolderIds = (nodes, out) => {
+    for (const n of nodes) {
+        if (n.children) {
+            out.add(n.id);
+            collectFolderIds(n.children, out);
+        }
+    }
+    return out;
+};
+
+const findPathToNode = (nodes, targetId, trail) => {
+    for (const n of nodes) {
+        const path = trail.concat(n.id);
+        if (n.id === targetId) return path;
+        if (n.children) {
+            const found = findPathToNode(n.children, targetId, path);
+            if (found) return found;
+        }
+    }
+    return null;
+};
+
+const setsEqual = (a, b) => {
+    if (a.size !== b.length) return false;
+    for (const id of b) if (!a.has(id)) return false;
+    return true;
+};
+
 /**
  * Tree is a Dash component that renders a hierarchical tree from a list of
  * dictionaries. Folder expand/collapse is animated with CSS transitions.
- * Selection is exposed to Dash callbacks via `selected_id`. Implements the
- * WAI-ARIA `tree` pattern with full keyboard navigation.
+ * Selection is exposed to Dash callbacks via `selected_id`, expanded folders
+ * via `expanded_ids`. Implements the WAI-ARIA `tree` pattern with full
+ * keyboard navigation.
  */
 const Tree = (props) => {
     const [term, setTerm] = useState('');
-    // Per-node open/closed overrides. Nodes not in the map fall back to
-    // `open_by_default`. Lifting state here (rather than per-Node) lets us
-    // compute the flat visible-row list for keyboard navigation.
-    const [expandedOverrides, setExpandedOverrides] = useState(() => new Map());
+
+    // Single source of truth for which folders are open. Initialized from
+    // `expanded_ids` if the caller provided one, otherwise from
+    // `open_by_default` walked over the data.
+    const [expandedSet, setExpandedSet] = useState(() => {
+        if (props.expanded_ids != null) return new Set(props.expanded_ids);
+        if (!props.open_by_default) return new Set();
+        return collectFolderIds(props.data || [], new Set());
+    });
+
     const [activeId, setActiveId] = useState(() =>
         props.data && props.data.length > 0 ? props.data[0].id : null
     );
 
     const rowRefs = useRef({});
+    const didInit = useRef(false);
 
     const search = term.trim().toLowerCase();
 
-    const isOpen = useCallback((id) => {
-        if (expandedOverrides.has(id)) return expandedOverrides.get(id);
-        return props.open_by_default;
-    }, [expandedOverrides, props.open_by_default]);
+    // Sync external `expanded_ids` prop changes into internal state, but only
+    // when the content actually differs (so our own setProps echo doesn't
+    // cause a re-render loop).
+    useEffect(() => {
+        if (props.expanded_ids == null) return;
+        if (setsEqual(expandedSet, props.expanded_ids)) return;
+        setExpandedSet(new Set(props.expanded_ids));
+    }, [props.expanded_ids]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // On mount, push the initial expanded set to Dash if the caller didn't
+    // specify one — so callbacks reading `expanded_ids` see a real value.
+    useEffect(() => {
+        if (didInit.current) return;
+        didInit.current = true;
+        if (props.expanded_ids == null && props.setProps) {
+            props.setProps({ expanded_ids: [...expandedSet] });
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const isOpen = useCallback((id) => expandedSet.has(id), [expandedSet]);
 
     const toggleOpen = useCallback((id) => {
-        setExpandedOverrides(prev => {
-            const next = new Map(prev);
-            const current = prev.has(id) ? prev.get(id) : props.open_by_default;
-            next.set(id, !current);
-            return next;
-        });
-    }, [props.open_by_default]);
+        const next = new Set(expandedSet);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        setExpandedSet(next);
+        if (props.setProps) {
+            props.setProps({ expanded_ids: [...next] });
+        }
+    }, [expandedSet, props]);
 
     const visibleRows = useMemo(() => {
         const list = [];
@@ -65,18 +118,43 @@ const Tree = (props) => {
         };
         walk(props.data || [], 0, null);
         return list;
-    }, [props.data, expandedOverrides, search, props.open_by_default, isOpen]);
+    }, [props.data, expandedSet, search, isOpen]);
 
     // If activeId is no longer in the visible list (e.g. search filtered it
     // out, or its parent was collapsed externally), fall back to the first
-    // visible row. This doesn't steal focus because we only update the
-    // tabindex via setActiveId; .focus() is only called from focusRow.
+    // visible row. Don't take focus.
     useEffect(() => {
         if (visibleRows.length === 0) return;
         if (!visibleRows.some(r => r.id === activeId)) {
             setActiveId(visibleRows[0].id);
         }
     }, [visibleRows, activeId]);
+
+    // When `selected_id` changes (from Dash or from a user click), make sure
+    // every ancestor folder is open and the row is scrolled into view.
+    useEffect(() => {
+        if (!props.selected_id) return;
+        const path = findPathToNode(props.data || [], props.selected_id, []);
+        if (!path) return;
+        const ancestors = path.slice(0, -1);
+        if (ancestors.length > 0) {
+            const needsExpand = ancestors.some(id => !expandedSet.has(id));
+            if (needsExpand) {
+                const next = new Set(expandedSet);
+                for (const id of ancestors) next.add(id);
+                setExpandedSet(next);
+                if (props.setProps) props.setProps({ expanded_ids: [...next] });
+            }
+        }
+        // Defer until after the next paint so any just-expanded rows are in
+        // their final layout position before we ask the browser to scroll.
+        requestAnimationFrame(() => {
+            const el = rowRefs.current[props.selected_id];
+            if (el && el.scrollIntoView) {
+                el.scrollIntoView({ block: 'nearest' });
+            }
+        });
+    }, [props.selected_id, props.data]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const focusRow = useCallback((id) => {
         setActiveId(id);
@@ -144,6 +222,10 @@ const Tree = (props) => {
                 if (row.hasChildren) toggleOpen(node.id);
                 if (row.isLeaf && node.href) {
                     window.location.href = node.href;
+                    // Same dance as focusRow does after click: the fragment
+                    // navigation moves focus to the hash target, so re-assert
+                    // focus on the tree row next frame.
+                    focusRow(node.id);
                 }
                 break;
             default:
@@ -314,7 +396,8 @@ Tree.propTypes = {
     node_icon_color: PropTypes.string,
 
     /**
-     * Whether folders are open by default.
+     * Whether folders are open by default. Only used to derive the initial
+     * `expanded_ids` if the caller doesn't supply one.
      */
     open_by_default: PropTypes.bool,
 
@@ -348,9 +431,18 @@ Tree.propTypes = {
     /**
      * The id of the currently selected node. Updated when the user clicks a
      * row or activates one via Enter/Space, and may be set from Dash to
-     * programmatically select a node. `null` when no node is selected.
+     * programmatically select a node. Setting this from Dash auto-expands
+     * the path to the node and scrolls it into view.
      */
     selected_id: PropTypes.string,
+
+    /**
+     * Ids of currently-expanded folders. Both read (the tree pushes
+     * updates here on toggle) and write (setting it from Dash expands or
+     * collapses the corresponding folders). When unset, the initial value
+     * is derived from `open_by_default`.
+     */
+    expanded_ids: PropTypes.arrayOf(PropTypes.string),
 
     /**
      * Dash-assigned callback that should be called to report property changes

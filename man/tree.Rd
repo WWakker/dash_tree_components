@@ -6,15 +6,15 @@
 \title{Tree component}
 
 \description{
-Tree is a Dash component that renders a hierarchical tree from a list of dictionaries. Folder expand/collapse is animated with CSS transitions. Selection is exposed to Dash callbacks via `selected_id`. Implements the WAI-ARIA `tree` pattern with full keyboard navigation.
+Tree is a Dash component that renders a hierarchical tree from a list of dictionaries. Folder expand/collapse is animated with CSS transitions. Selection is exposed to Dash callbacks via `selected_id`, expanded folders via `expanded_ids`. Implements the WAI-ARIA `tree` pattern with full keyboard navigation.
 }
 
 \usage{
 tree(id=NULL, aria_label=NULL, className=NULL,
-collapse_icon_color=NULL, data=NULL, height=NULL,
-indent=NULL, node_icon_color=NULL, open_by_default=NULL,
-padding=NULL, padding_bottom=NULL, padding_top=NULL,
-rowClassName=NULL, row_height=NULL,
+collapse_icon_color=NULL, data=NULL, expanded_ids=NULL,
+height=NULL, indent=NULL, node_icon_color=NULL,
+open_by_default=NULL, padding=NULL, padding_bottom=NULL,
+padding_top=NULL, rowClassName=NULL, row_height=NULL,
 search_input_height=NULL, searchable=NULL, selected_id=NULL,
 width=NULL)
 }
@@ -35,6 +35,11 @@ attribute on the root `role="tree"` element.}
 (rendered as a link on leaves), and optional `icon_color` overriding
 `node_icon_color` for that node.}
 
+\item{expanded_ids}{List of characters. Ids of currently-expanded folders. Both read (the tree pushes
+updates here on toggle) and write (setting it from Dash expands or
+collapses the corresponding folders). When unset, the initial value
+is derived from `open_by_default`.}
+
 \item{height}{Numeric | character. The height of the Tree. Either a number (pixels) or a CSS string
 (e.g. '80vh', '100\%'). Defaults to '100\%' so the tree fills its parent.
 The parent must have a bounded height (e.g. via `style={'height':
@@ -45,7 +50,8 @@ The parent must have a bounded height (e.g. via `style={'height':
 \item{node_icon_color}{Character. Color of the node (folder/leaf) icons. Overridable per node via
 `icon_color` in the data.}
 
-\item{open_by_default}{Logical. Whether folders are open by default.}
+\item{open_by_default}{Logical. Whether folders are open by default. Only used to derive the initial
+`expanded_ids` if the caller doesn't supply one.}
 
 \item{padding}{Numeric. Padding applied to both top and bottom of the scrollable area if
 `padding_top` / `padding_bottom` are not set.}
@@ -65,7 +71,8 @@ automatically.}
 
 \item{selected_id}{Character. The id of the currently selected node. Updated when the user clicks a
 row or activates one via Enter/Space, and may be set from Dash to
-programmatically select a node. `null` when no node is selected.}
+programmatically select a node. Setting this from Dash auto-expands
+the path to the node and scrolls it into view.}
 
 \item{width}{Numeric | character. The width of the Tree. Either a number (pixels) or a CSS string
 (e.g. '100\%'). Defaults to '100\%' so the tree fills its parent's width.}
