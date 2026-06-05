@@ -1,6 +1,4 @@
-.tree-folder-icon, .tree-leaf-icon, .tree-collapse-icon {
-    flex: none;
-    margin-left: 3px;
+.tree-folder-icon, .tree-leaf-icon {
     margin-right: 3px;
 }
 
@@ -18,19 +16,13 @@ a.tree-node-leaf-text {
 .tree-search-input {
     border-radius: 10px;
     box-sizing: border-box;
-    width: 100%;
 }
 
-.tree-container .tree-ul {
-    list-style: none;
+.tree-container .tree-ul, .tree-container .tree-li {
     margin: 0;
     padding: 0;
 }
 
-.tree-container .tree-li {
-    margin: 0;
-    padding: 0;
-}
 
 /* Inner wrapper grows to widest row so the scroll container shows a single
    horizontal scrollbar when any row overflows. */
@@ -56,7 +48,6 @@ a.tree-node-leaf-text {
     box-sizing: border-box;
     padding: 0 4px;
     border-radius: 3px;
-    color: black;
 }
 
 .tree-container .tree-row:hover:not(.selected) .tree-row-content {
