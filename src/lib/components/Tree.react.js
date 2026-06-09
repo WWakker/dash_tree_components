@@ -325,7 +325,7 @@ Tree.defaultProps = {
     searchable: true,
     search_input_height: 25,
     indent: 24,
-    row_height: 30,
+    row_height: 24,
     width: null,
     height: '100%',
     selected_id: null,
