@@ -86,7 +86,7 @@ Keyword arguments:
 - rowClassName (string; optional):
     Class name applied to each row.
 
-- row_height (number; default 30):
+- row_height (number; default 24):
     Minimum height of each row in pixels. Default 30.
 
 - search_input_height (number; default 25):
