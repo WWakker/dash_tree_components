@@ -280,3 +280,6 @@ Manifest.toml
 JuliaManifest.toml
 
 assets/
+
+# Claude Code project instructions (local only, not tracked)
+CLAUDE.md
