@@ -1,3 +1,26 @@
+/* Column layout: optional fixed search bar above a flexing scroll area.
+   min-height: 0 lets the scroll area shrink below its content height so
+   overflow: auto engages instead of growing the container.
+
+   flex: 1 1 0 + min-height: 0 let the container fill the remaining space of a
+   flex-column parent rather than its full height, so a sibling (e.g. a header)
+   above the Tree doesn't push the bottom rows out of view. The flex-basis of 0
+   overrides the inline height on the main axis inside a flex parent; in a plain
+   block parent the flex props are ignored and the inline height (default 100%)
+   applies as before. */
+.tree-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-height: 0;
+}
+
+.tree-container .tree-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
 .tree-folder-icon, .tree-leaf-icon {
     margin-right: 3px;
 }
@@ -16,17 +39,18 @@ a.tree-node-leaf-text {
 .tree-search-input {
     border-radius: 10px;
     box-sizing: border-box;
+    flex: none;
 }
 
 .tree-container .tree-ul, .tree-container .tree-li {
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
-
-/* Inner wrapper grows to widest row so the scroll container shows a single
+/* Root list grows to the widest row so the scroll container shows a single
    horizontal scrollbar when any row overflows. */
-.tree-container .tree-content {
+.tree-container .tree-scroll > .tree-ul {
     width: max-content;
     min-width: 100%;
 }

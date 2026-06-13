@@ -143,3 +143,4 @@ The sync-from-prop effects use content-equality checks (`setsEqual`) so the `set
 - **Search is naive**: no debounce, no match highlight.
 - **Bundle is ~4.5 MiB**, mostly `react-icons` SVG data. Five icons are actually used — inlining them as JSX would shrink the bundle ~80%.
 - **`Node.react.js` PropTypes-less** means `dash-generate-components` prints a `TypeError` per build (cosmetic, doesn't block).
+- **Setting `selected_id` to a folder with a tall open subtree** scrolls the whole `<li>` (row + subtree) with `block: 'nearest'`, which can leave the folder's own row out of view. Don't "fix" this by scrolling the `.tree-row` instead: that was tried and reverted — the `<li>` scroll turns out to stabilize the viewport against scroll-anchoring drift during the collapse animation, and without it clicks landing mid-animation hit stale coordinates (breaks `test_clicking_folder_toggles_expanded` and `test_keyboard_arrow_left_collapses_focused_folder`).

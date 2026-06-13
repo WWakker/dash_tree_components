@@ -43,7 +43,14 @@ is derived from `open_by_default`.}
 \item{height}{Numeric | character. The height of the Tree. Either a number (pixels) or a CSS string
 (e.g. '80vh', '100\%'). Defaults to '100\%' so the tree fills its parent.
 The parent must have a bounded height (e.g. via `style={'height':
-'80vh'}`) — a percentage of an auto-height parent will collapse to 0.}
+'80vh'}`) — a percentage of an auto-height parent will collapse to 0.
+
+To place other content (e.g. a header) alongside the Tree in the same
+container, make that container a flex column
+(`style={'display': 'flex', 'flexDirection': 'column'}` with a bounded
+height). The Tree then flexes to fill the space left by its siblings and
+scrolls internally, instead of overflowing — its `height: 100\%` is
+ignored on the flex main axis in that case.}
 
 \item{hover_color}{Character. Background color of a row when the mouse is over it. Does not apply to
 the selected row (selection wins). Default `#76b6ec`.}
@@ -65,7 +72,7 @@ the selected row (selection wins). Default `#76b6ec`.}
 
 \item{rowClassName}{Character. Class name applied to each row.}
 
-\item{row_height}{Numeric. Minimum height of each row in pixels. Default 30.}
+\item{row_height}{Numeric. Minimum height of each row in pixels. Default 24.}
 
 \item{search_input_height}{Numeric. Height of the search bar in pixels.}
 

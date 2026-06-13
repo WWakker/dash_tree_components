@@ -1,11 +1,6 @@
 import React, { useCallback } from 'react';
 import { AiOutlinePlusSquare, AiOutlineMinusSquare, MdBarChart, FaFolderOpen } from '../icons';
-
-const nodeMatches = (node, term) => {
-    if (node.name.toLowerCase().includes(term)) return true;
-    if (node.children) return node.children.some(c => nodeMatches(c, term));
-    return false;
-};
+import { nodeMatches } from '../utils';
 
 const Node = ({ node, level, positionInSet, sizeOfSet, tree }) => {
     const isLeaf = !node.children;

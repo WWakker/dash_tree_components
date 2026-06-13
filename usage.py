@@ -160,13 +160,20 @@ app.layout = html.Div([
     html.Div(
         [
             html.Div(
-                dash_tree_components.Tree(
+                [html.P('Contents'),
+                    dash_tree_components.Tree(
                     id='tree',
                     data=data,
-                    row_height=30,
+                    row_height=24,
                     searchable=True,
-                ),
-                style={'flex': 1, 'minHeight': 0, 'backgroundColor': '#f0faff'},
+                )],
+                style={
+                    'flex': 1,
+                    'minHeight': 0,
+                    'backgroundColor': '#f0faff',
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                },
             ),
             html.Label('Clicked node:', htmlFor='clicked-node',
                        style={'marginTop': '10px'}),

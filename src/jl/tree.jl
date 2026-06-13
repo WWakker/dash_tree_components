@@ -30,6 +30,13 @@ is derived from `open_by_default`.
 (e.g. '80vh', '100%'). Defaults to '100%' so the tree fills its parent.
 The parent must have a bounded height (e.g. via `style={'height':
 '80vh'}`) — a percentage of an auto-height parent will collapse to 0.
+
+To place other content (e.g. a header) alongside the Tree in the same
+container, make that container a flex column
+(`style={'display': 'flex', 'flexDirection': 'column'}` with a bounded
+height). The Tree then flexes to fill the space left by its siblings and
+scrolls internally, instead of overflowing — its `height: 100%` is
+ignored on the flex main axis in that case.
 - `hover_color` (String; optional): Background color of a row when the mouse is over it. Does not apply to
 the selected row (selection wins). Default `#76b6ec`.
 - `indent` (Real; optional): Per-level indentation in pixels. Default 24.
@@ -42,7 +49,7 @@ the selected row (selection wins). Default `#76b6ec`.
 - `padding_bottom` (Real; optional): Bottom padding of the scrollable area.
 - `padding_top` (Real; optional): Top padding of the scrollable area.
 - `rowClassName` (String; optional): Class name applied to each row.
-- `row_height` (Real; optional): Minimum height of each row in pixels. Default 30.
+- `row_height` (Real; optional): Minimum height of each row in pixels. Default 24.
 - `search_input_height` (Real; optional): Height of the search bar in pixels.
 - `searchable` (Bool; optional): Whether to include a search bar. Searching expands all matching paths
 automatically.

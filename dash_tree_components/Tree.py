@@ -56,7 +56,13 @@ Keyword arguments:
     (e.g. '80vh', '100%'). Defaults to '100%' so the tree fills its
     parent. The parent must have a bounded height (e.g. via
     `style={'height': '80vh'}`) — a percentage of an auto-height
-    parent will collapse to 0.
+    parent will collapse to 0.  To place other content (e.g. a header)
+    alongside the Tree in the same container, make that container a
+    flex column (`style={'display': 'flex', 'flexDirection':
+    'column'}` with a bounded height). The Tree then flexes to fill
+    the space left by its siblings and scrolls internally, instead of
+    overflowing — its `height: 100%` is ignored on the flex main axis
+    in that case.
 
 - hover_color (string; default '#76b6ec'):
     Background color of a row when the mouse is over it. Does not
@@ -87,7 +93,7 @@ Keyword arguments:
     Class name applied to each row.
 
 - row_height (number; default 24):
-    Minimum height of each row in pixels. Default 30.
+    Minimum height of each row in pixels. Default 24.
 
 - search_input_height (number; default 25):
     Height of the search bar in pixels.

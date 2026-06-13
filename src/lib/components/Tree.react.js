@@ -1,13 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Node from './Node.react';
+import { nodeMatches } from '../utils';
 import '../styles.css';
-
-const nodeMatches = (node, term) => {
-    if (node.name.toLowerCase().includes(term)) return true;
-    if (node.children) return node.children.some(c => nodeMatches(c, term));
-    return false;
-};
 
 const collectFolderIds = (nodes, out) => {
     for (const n of nodes) {
@@ -274,8 +269,6 @@ const Tree = (props) => {
              style={{
                  width: props.width || '100%',
                  height: props.height,
-                 display: 'flex',
-                 flexDirection: 'column',
                  '--tree-selected-bg': props.selected_color,
                  '--tree-hover-bg': props.hover_color,
              }}>
@@ -286,33 +279,28 @@ const Tree = (props) => {
                     aria-label="Search tree"
                     className="tree-search-input"
                     value={term}
-                    style={{ height: props.search_input_height, flex: 'none' }}
+                    style={{ height: props.search_input_height }}
                     onChange={(e) => setTerm(e.target.value)}
                 />
             ) : null}
             <div className="tree-scroll"
                  onKeyDown={handleScrollKeyDown}
                  style={{
-                flex: 1,
-                minHeight: 0,
-                overflow: 'auto',
                 paddingTop: props.padding_top != null ? props.padding_top : props.padding,
                 paddingBottom: props.padding_bottom != null ? props.padding_bottom : props.padding,
             }}>
-                <div className="tree-content">
-                    <ul className="tree-ul" role="tree" aria-label={props.aria_label || 'Tree'}>
-                        {data.map((node, idx) => (
-                            <Node
-                                key={node.id}
-                                node={node}
-                                level={0}
-                                positionInSet={idx + 1}
-                                sizeOfSet={data.length}
-                                tree={treeApi}
-                            />
-                        ))}
-                    </ul>
-                </div>
+                <ul className="tree-ul" role="tree" aria-label={props.aria_label || 'Tree'}>
+                    {data.map((node, idx) => (
+                        <Node
+                            key={node.id}
+                            node={node}
+                            level={0}
+                            positionInSet={idx + 1}
+                            sizeOfSet={data.length}
+                            tree={treeApi}
+                        />
+                    ))}
+                </ul>
             </div>
         </div>
     );
@@ -359,11 +347,18 @@ Tree.propTypes = {
      * (e.g. '80vh', '100%'). Defaults to '100%' so the tree fills its parent.
      * The parent must have a bounded height (e.g. via `style={'height':
      * '80vh'}`) — a percentage of an auto-height parent will collapse to 0.
+     *
+     * To place other content (e.g. a header) alongside the Tree in the same
+     * container, make that container a flex column
+     * (`style={'display': 'flex', 'flexDirection': 'column'}` with a bounded
+     * height). The Tree then flexes to fill the space left by its siblings and
+     * scrolls internally, instead of overflowing — its `height: 100%` is
+     * ignored on the flex main axis in that case.
      */
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
     /**
-     * Minimum height of each row in pixels. Default 30.
+     * Minimum height of each row in pixels. Default 24.
      */
     row_height: PropTypes.number,
 
