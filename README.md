@@ -1,3 +1,6 @@
+[![PyPI version](https://img.shields.io/pypi/v/dash-tree-components)](https://pypi.org/project/dash-tree-components/)
+[![PyPI Downloads](https://static.pepy.tech/badge/dash-tree-components)](https://pepy.tech/projects/dash-tree-components)
+
 # dash_tree_components
 
 dash_tree_components is a Dash component library.
